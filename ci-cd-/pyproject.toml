@@ -1,0 +1,23 @@
+[project]
+name = "calculator"
+version = "0.1.0"
+description = "none"
+authors = [
+    {name = "Ram2389",email = "bel89omar@live.it"}
+]
+license = "none"
+requires-python = ">=3.11"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "ruff (>=0.15.12,<0.16.0)",
+    "mypy (>=2.0.0,<3.0.0)",
+    "build (>=1.5.0,<2.0.0)"
+]
