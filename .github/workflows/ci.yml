@@ -9,27 +9,40 @@ on:
 jobs:
   quality:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+    # Imposta la cartella di lavoro per tutti i comandi 'run'
+    defaults:
+      run:
+        working-directory: ./ci-cd-
 
-      - uses: actions/setup-python@v5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          # Il caching velocizza le esecuzioni future
+          cache: 'poetry'
+          cache-dependency-path: ./ci-cd-/poetry.lock
 
       - name: Install dependencies
-        run: pip install ruff mypy pytest build
+        run: poetry install
 
-      - name: Lint
-        run: ruff check .
+      - name: Lint (Ruff)
+        run: poetry run ruff check .
 
-      - name: Format check
-        run: ruff format --check .
+      - name: Format check (Ruff)
+        run: poetry run ruff format --check .
 
-      - name: Type check
-        run: mypy calculator/
+      - name: Type check (Mypy)
+        run: poetry run mypy calculator/
 
-      - name: Test
-        run: pytest tests/ -v
+      - name: Test (Pytest)
+        run: poetry run pytest tests/ -v
 
       - name: Build
-        run: python -m build
+        run: poetry build
